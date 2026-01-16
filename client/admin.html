@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetim Paneli - Admin</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 2rem;
+        }
+
+        .admin-tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .admin-tab:hover {
+            color: #2196F3;
+        }
+
+        .admin-tab.active {
+            color: #2196F3;
+            border-bottom-color: #2196F3;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .data-table th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .faculty-dept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .faculty-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .faculty-card h3 {
+            margin: 0 0 1rem 0;
+            color: #2196F3;
+        }
+
+        .department-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .department-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .department-list li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="university-brand">
+                    <div>
+                        <h1>Yönetim Paneli</h1>
+                        <p class="subtitle">Admin</p>
+                    </div>
+                    <button class="faculty-toggle-btn" id="faculty-toggle-btn">
+                        <span>Fakülteler</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+                    <button class="faculty-toggle-btn" id="courses-toggle-btn">
+                        <span>Dersler</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="user-info" id="user-info"></div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Admin Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="users">Kullanıcılar</button>
+                <button class="admin-tab" data-tab="faculties">Fakülteler</button>
+                <button class="admin-tab" data-tab="departments">Bölümler</button>
+            </div>
+
+            <!-- Users Tab -->
+            <div class="tab-content active" id="users-tab">
+                <div class="page-header">
+                    <h2>Kullanıcılar</h2>
+                    <button class="btn btn-primary" id="add-user-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Kullanıcı Ekle
+                    </button>
+                </div>
+                <div id="users-container">
+                    <div class="loading">Yükleniyor...</div>
+                </div>
+            </div>
+
+            <!-- Faculties Tab -->
+            <div class="tab-content" id="faculties-tab">
+                <div class="page-header">
+                    <h2>Fakülteler</h2>
+                    <button class="btn btn-primary" id="add-faculty-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Fakülte Ekle
+                    </button>
+                </div>
+                <div id="faculties-container">
+                    <div class="loading">Yükleniyor...</div>
+                </div>
+            </div>
+
+            <!-- Departments Tab -->
+            <div class="tab-content" id="departments-tab">
+                <div class="page-header">
+                    <h2>Bölümler</h2>
+                    <button class="btn btn-primary" id="add-department-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Bölüm Ekle
+                    </button>
+                </div>
+                <div id="departments-container">
+                    <div class="loading">Yükleniyor...</div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi</p>
+        </footer>
+    </div>
+
+    <!-- Add/Edit User Modal -->
+    <div class="modal" id="user-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="user-modal-title">Kullanıcı Ekle</h3>
+                <button class="modal-close" data-close="user-modal">&times;</button>
+            </div>
+            <form id="user-form" class="login-form">
+                <input type="hidden" id="user-id">
+                <div class="form-group">
+                    <label for="user-name">Ad Soyad</label>
+                    <input type="text" id="user-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="user-email">E-posta</label>
+                    <input type="email" id="user-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="user-password">Şifre</label>
+                    <input type="password" id="user-password" placeholder="Boş bırakırsanız değiştirilmez">
+                </div>
+                <div class="form-group">
+                    <label for="user-role">Rol</label>
+                    <select id="user-role" required>
+                        <option value="student">Öğrenci</option>
+                        <option value="instructor">Öğretim Görevlisi</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group" id="faculty-group" style="display: none;">
+                    <label for="user-faculty">Fakülte</label>
+                    <select id="user-faculty">
+                        <option value="">Seçiniz</option>
+                    </select>
+                </div>
+                <div class="form-group" id="department-group" style="display: none;">
+                    <label for="user-department">Bölüm</label>
+                    <select id="user-department">
+                        <option value="">Önce fakülte seçiniz</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Kaydet</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Faculty Modal -->
+    <div class="modal" id="faculty-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="faculty-modal-title">Fakülte Ekle</h3>
+                <button class="modal-close" data-close="faculty-modal">&times;</button>
+            </div>
+            <form id="faculty-form" class="login-form">
+                <input type="hidden" id="faculty-id">
+                <div class="form-group">
+                    <label for="faculty-name">Fakülte Adı</label>
+                    <input type="text" id="faculty-name" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Kaydet</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Department Modal -->
+    <div class="modal" id="department-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="department-modal-title">Bölüm Ekle</h3>
+                <button class="modal-close" data-close="department-modal">&times;</button>
+            </div>
+            <form id="department-form" class="login-form">
+                <input type="hidden" id="department-id">
+                <div class="form-group">
+                    <label for="department-faculty">Fakülte</label>
+                    <select id="department-faculty" required>
+                        <option value="">Seçiniz</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="department-name">Bölüm Adı</label>
+                    <input type="text" id="department-name" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Kaydet</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Faculty Panel Overlay -->
+    <div class="faculty-panel-overlay" id="faculty-panel-overlay"></div>
+
+    <!-- Faculty Panel -->
+    <div class="faculty-panel" id="faculty-panel">
+        <div class="faculty-panel-header">
+            <h2>Fakülteler ve Bölümler</h2>
+            <button class="faculty-panel-close" id="faculty-panel-close">&times;</button>
+        </div>
+        <div class="faculty-panel-content" id="faculty-panel-content">
+            <div class="loading">Yükleniyor...</div>
+        </div>
+    </div>
+
+    <!-- Courses Panel Overlay -->
+    <div class="faculty-panel-overlay" id="courses-panel-overlay"></div>
+
+    <!-- Courses Panel -->
+    <div class="faculty-panel" id="courses-panel">
+        <div class="faculty-panel-header">
+            <h2>Tüm Dersler</h2>
+            <button class="faculty-panel-close" id="courses-panel-close">&times;</button>
+        </div>
+        <div class="faculty-panel-content" id="courses-panel-content">
+            <div class="loading">Yükleniyor...</div>
+        </div>
+    </div>
+
+    <!-- Assign Course Modal -->
+    <div class="modal" id="assign-course-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Eğitmene Ders Ata</h3>
+                <button class="modal-close" data-close="assign-course-modal">&times;</button>
+            </div>
+            <form id="assign-course-form" class="login-form">
+                <input type="hidden" id="assign-instructor-id">
+                <input type="hidden" id="assign-instructor-faculty-id">
+                <input type="hidden" id="assign-instructor-department-id">
+                <div class="form-group">
+                    <label>Eğitmen</label>
+                    <input type="text" id="assign-instructor-name" readonly style="background: #f5f5f5;">
+                </div>
+                <div class="form-group">
+                    <label for="assign-course-title">Ders Adı</label>
+                    <input type="text" id="assign-course-title" placeholder="Ders adını giriniz" required>
+                </div>
+                <div class="form-group">
+                    <label for="assign-course-faculty">Fakülte</label>
+                    <select id="assign-course-faculty" required>
+                        <option value="">Seçiniz</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assign-course-department">Bölüm</label>
+                    <select id="assign-course-department" required>
+                        <option value="">Önce fakülte seçiniz</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Dersi Ata</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="admin.js"></script>
+</body>
+</html>

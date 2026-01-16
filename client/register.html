@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öğrenci Kayıt - ATÜ Ders Yönetim Sistemi</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>Öğrenci Kayıt</h1>
+                <p class="subtitle">Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi</p>
+            </div>
+
+            <form id="register-form" class="login-form">
+                <div id="error-message" class="alert alert-error hidden"></div>
+
+                <div class="form-group">
+                    <label for="name">Ad Soyad</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Adınız Soyadınız"
+                        required
+                        autocomplete="name"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-posta</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="E-posta adresiniz (@ogr.atu.edu.tr)"
+                        required
+                        autocomplete="email"
+                    >
+                    <small class="form-hint">Öğrenci kayıtları için @ogr.atu.edu.tr uzantılı e-posta gerekli</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Şifre</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Şifre oluşturun"
+                        required
+                        autocomplete="new-password"
+                        minlength="6"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Şifre Tekrar</label>
+                    <input
+                        type="password"
+                        id="confirm-password"
+                        name="confirm-password"
+                        placeholder="Şifrenizi tekrar girin"
+                        required
+                        autocomplete="new-password"
+                        minlength="6"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Hesap Tipi</label>
+                    <div class="role-badge">
+                        <span class="badge-student">Öğrenci</span>
+                    </div>
+                    <small class="form-hint">Sadece öğrenciler kendi kayıtlarını oluşturabilir. Öğretim görevlileri admin tarafından eklenir.</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" id="register-btn">
+                    <span>Hesap Oluştur</span>
+                </button>
+            </form>
+
+            <div class="register-link">
+                <p>Zaten hesabınız var mı? <a href="/login.html">Giriş Yap</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="register.js"></script>
+</body>
+</html>

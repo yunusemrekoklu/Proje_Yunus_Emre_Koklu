@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Materials - Instructor Portal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div>
+                    <h1>Instructor Portal</h1>
+                    <p class="subtitle">Course Material Management System</p>
+                </div>
+                <div class="user-info" id="user-info"></div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="page-header">
+                <a href="/index.html" class="back-link">&larr; Back to My Courses</a>
+                <h2 id="course-title">Course Materials</h2>
+            </div>
+
+            <div class="content-split">
+                <!-- Left Panel: Materials -->
+                <div class="panel-left">
+                    <div class="panel-header">
+                        <h3>Course Materials</h3>
+                        <button id="upload-btn" class="btn btn-primary instructor-only">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            Upload Material
+                        </button>
+                    </div>
+                    <div id="materials-container" class="materials-container">
+                        <div class="loading">Loading materials...</div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Lecture Notes -->
+                <div class="panel-right">
+                    <div class="panel-header">
+                        <h3>Lecture Notes</h3>
+                        <button id="upload-note-btn" class="btn btn-secondary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            Upload Note
+                        </button>
+                    </div>
+                    <div id="notes-container" class="notes-container">
+                        <div class="loading">Loading notes...</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 University Learning Management System</p>
+        </footer>
+    </div>
+
+    <!-- Upload Modal -->
+    <div id="upload-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Upload New Material</h3>
+                <button id="close-modal" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="upload-form">
+                    <div class="form-group">
+                        <label for="file">Choose File</label>
+                        <div id="drop-zone" class="drop-zone">
+                            <input type="file" id="file" name="file" accept=".pdf,.docx,.pptx,.xlsx,.zip" hidden>
+                            <div class="drop-zone-text">
+                                <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                <p>Drag & drop your file here</p>
+                                <p class="drop-zone-subtext">or click to browse</p>
+                            </div>
+                            <div id="file-info" class="file-info"></div>
+                        </div>
+                        <small class="form-hint">Allowed formats: PDF, DOCX, PPTX, XLSX, ZIP (max 100MB)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description (Optional)</label>
+                        <textarea id="description" name="description" rows="3" placeholder="Enter a brief description of the material..."></textarea>
+                    </div>
+
+                    <div id="duplicate-section" class="duplicate-section hidden">
+                        <div class="alert alert-warning">
+                            <strong>Duplicate File Detected</strong>
+                            <p>A file with this name already exists. How would you like to proceed?</p>
+                        </div>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="duplicatePolicy" value="version" checked>
+                                <span>Create New Version</span>
+                                <small>Save as a new version (e.g., filename__v2.pdf)</small>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="duplicatePolicy" value="overwrite">
+                                <span>Overwrite Existing</span>
+                                <small>Replace the existing file</small>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="duplicatePolicy" value="cancel">
+                                <span>Cancel Upload</span>
+                                <small>Go back and choose a different file</small>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="progress-section" class="progress-section hidden">
+                        <div class="progress-bar">
+                            <div id="progress-fill" class="progress-fill"></div>
+                        </div>
+                        <p id="progress-text" class="progress-text">Uploading...</p>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="cancel-btn" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" id="submit-btn" class="btn btn-primary" disabled>Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lecture Notes Upload Modal -->
+    <div id="note-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Upload Lecture Note</h3>
+                <button id="close-note-modal" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="note-upload-form">
+                    <div class="form-group">
+                        <label for="note-file">Choose File</label>
+                        <div id="note-drop-zone" class="drop-zone">
+                            <input type="file" id="note-file" name="file" accept=".pdf,.docx" hidden>
+                            <div class="drop-zone-text">
+                                <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                <p>Drag & drop your lecture note here</p>
+                                <p class="drop-zone-subtext">or click to browse</p>
+                            </div>
+                            <div id="note-file-info" class="file-info"></div>
+                        </div>
+                        <small class="form-hint">Allowed formats: PDF, DOCX (max 100MB)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="note-description">Description (Optional)</label>
+                        <textarea id="note-description" name="description" rows="3" placeholder="Enter a brief description of the lecture note..."></textarea>
+                    </div>
+
+                    <div id="note-progress-section" class="progress-section hidden">
+                        <div class="progress-bar">
+                            <div id="note-progress-fill" class="progress-fill"></div>
+                        </div>
+                        <p id="note-progress-text" class="progress-text">Uploading...</p>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="cancel-note-btn" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" id="note-submit-btn" class="btn btn-primary" disabled>Upload Note</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="course.js"></script>
+</body>
+</html>

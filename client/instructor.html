@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öğretmen Paneli</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .enrollment-requests {
+            margin-top: 2rem;
+        }
+
+        .request-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .request-header h3 {
+            margin: 0;
+            color: #2196F3;
+        }
+
+        .request-header .badge {
+            background: #fff3cd;
+            color: #856404;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .request-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 6px;
+        }
+
+        .request-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .request-detail label {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .request-detail span {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .request-actions button {
+            flex: 1;
+        }
+
+        .course-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .course-tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .course-tab:hover {
+            color: #2196F3;
+        }
+
+        .course-tab.active {
+            color: #2196F3;
+            border-bottom-color: #2196F3;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="university-brand">
+                    <div>
+                        <h1>Öğretmen Paneli</h1>
+                        <p class="subtitle">Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi</p>
+                    </div>
+                    <button class="faculty-toggle-btn" id="faculty-toggle-btn">
+                        <span>Fakülteler</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="user-info" id="user-info"></div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Course Tabs -->
+            <div class="course-tabs">
+                <button class="course-tab active" data-tab="courses">Derslerim</button>
+                <button class="course-tab" data-tab="requests">Kayıt Talepleri</button>
+            </div>
+
+            <!-- My Courses Tab -->
+            <div class="tab-content active" id="courses-tab">
+                <div class="page-header">
+                    <h2>Derslerim</h2>
+                </div>
+                <div id="courses-container" class="courses-container">
+                    <div class="loading">Yükleniyor...</div>
+                </div>
+            </div>
+
+            <!-- Enrollment Requests Tab -->
+            <div class="tab-content" id="requests-tab">
+                <div class="page-header">
+                    <h2>Ders Kayıt Talepleri</h2>
+                </div>
+                <div id="requests-container">
+                    <div class="loading">Yükleniyor...</div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi</p>
+        </footer>
+    </div>
+
+    <!-- Faculty Panel Overlay -->
+    <div class="faculty-panel-overlay" id="faculty-panel-overlay"></div>
+
+    <!-- Faculty Panel -->
+    <div class="faculty-panel" id="faculty-panel">
+        <div class="faculty-panel-header">
+            <h2>Fakülteler ve Bölümler</h2>
+            <button class="faculty-panel-close" id="faculty-panel-close">&times;</button>
+        </div>
+        <div class="faculty-panel-content" id="faculty-panel-content">
+            <div class="loading">Yükleniyor...</div>
+        </div>
+    </div>
+
+    <script type="module" src="instructor.js"></script>
+</body>
+</html>

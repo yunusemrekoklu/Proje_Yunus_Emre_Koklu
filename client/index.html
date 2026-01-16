@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öğrenci Paneli</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .course-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: #2196F3;
+        }
+
+        .course-card .instructor {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-card .meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .course-card .enrollment-count {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+
+        .requests-section {
+            margin-top: 2rem;
+        }
+
+        .request-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+
+        .request-info h4 {
+            margin: 0 0 0.25rem 0;
+        }
+
+        .request-meta {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-approved { background: #d4edda; color: #155724; }
+        .status-rejected { background: #f8d7da; color: #721c24; }
+
+        .filter-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .filter-group {
+            flex: 1;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="university-brand">
+                    <div>
+                        <h1>Öğrenci Paneli</h1>
+                        <p class="subtitle">Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi</p>
+                    </div>
+                    <button class="faculty-toggle-btn" id="faculty-toggle-btn">
+                        <span>Fakülteler</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="user-info" id="user-info"></div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- My Enrolled Courses -->
+            <section class="requests-section" id="enrolled-section">
+                <div class="page-header">
+                    <h2>Kayıtlı Derslerim</h2>
+                </div>
+                <div id="enrolled-container" class="course-grid">
+                    <div class="loading">Yükleniyor...</div>
+                </div>
+            </section>
+
+            <!-- My Enrollment Requests -->
+            <section class="requests-section" id="requests-section">
+                <div class="page-header">
+                    <h2>Ders Kayıt Taleplerim</h2>
+                </div>
+                <div id="requests-container">
+                    <div class="loading">Yükleniyor...</div>
+                </div>
+            </section>
+
+            <!-- Available Courses -->
+            <section style="margin-top: 3rem;">
+                <div class="page-header">
+                    <h2>Ders Keşfet</h2>
+                </div>
+
+                <!-- Filters -->
+                <div class="filter-section">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="filter-faculty">Fakülte</label>
+                            <select id="filter-faculty">
+                                <option value="">Tüm Fakülteler</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-department">Bölüm</label>
+                            <select id="filter-department" disabled>
+                                <option value="">Önce fakülte seçiniz</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="courses-container" class="course-grid">
+                    <div class="loading">Dersler yükleniyor...</div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi</p>
+        </footer>
+    </div>
+
+    <!-- Faculty Panel Overlay -->
+    <div class="faculty-panel-overlay" id="faculty-panel-overlay"></div>
+
+    <!-- Faculty Panel -->
+    <div class="faculty-panel" id="faculty-panel">
+        <div class="faculty-panel-header">
+            <h2>Fakülteler ve Bölümler</h2>
+            <button class="faculty-panel-close" id="faculty-panel-close">&times;</button>
+        </div>
+        <div class="faculty-panel-content" id="faculty-panel-content">
+            <div class="loading">Yükleniyor...</div>
+        </div>
+    </div>
+
+    <script type="module" src="index.js"></script>
+</body>
+</html>
