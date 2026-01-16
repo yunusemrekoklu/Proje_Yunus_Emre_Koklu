@@ -83,33 +83,25 @@ Project2/
 ### Gereksinimler
 
 - Node.js 18+ (native fetch desteği için)
-- npm veya yarn
 
-### Adımlar
+### Hızlı Başlatma
 
-1. **Bağımlılıkları yükle**:
+**GitHub'dan indirdikten sonra:**
 
-   ```bash
-   cd Project2
-   npm install
-   ```
+1. `baslat.bat` dosyasına çift tıklayın
 
-2. **Geliştirme sunucusunu başlat**:
-
-   ```bash
-   npm run dev
-   ```
-
-   Veya Windows için:
-
-   ```bash
-   baslat.bat
-   ```
-
-3. **Tarayıcıda aç**:
+2. Tarayıcıda otomatik açılacak veya manuel olarak açın:
    ```
    http://localhost:3000/login.html
    ```
+
+**İşte bu kadar!** Tüm bağımlılıklar zaten yüklü, ek kurulum gerekmiyor.
+
+### Alternatif Başlatma (Komut Satırı)
+
+```bash
+npm run dev
+```
 
 ## 📜 Kullanılabilir Komutlar
 
