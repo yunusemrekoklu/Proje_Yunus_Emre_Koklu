@@ -88,14 +88,17 @@ Project2/
 
 **GitHub'dan indirdikten sonra:**
 
-1. `baslat.bat` dosyasına çift tıklayın
+1. Bağımlılıkları yükleyin:
+   ```bash
+   npm install
+   ```
 
-2. Tarayıcıda otomatik açılacak veya manuel olarak açın:
+2. `baslat.bat` dosyasına çift tıklayın
+
+3. Tarayıcıda otomatik açılacak veya manuel olarak açın:
    ```
    http://localhost:3000/login.html
    ```
-
-**İşte bu kadar!** Tüm bağımlılıklar zaten yüklü, ek kurulum gerekmiyor.
 
 ### Alternatif Başlatma (Komut Satırı)
 
