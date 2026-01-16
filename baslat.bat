@@ -27,7 +27,7 @@ echo Sunucu baslatiliyor...
 echo Tarayici aciliyor...
 echo.
 
-timeout /t 3 /nobreak > nul
+timeout /t 15 /nobreak > nul
 
 start http://localhost:3000/login.html
 
