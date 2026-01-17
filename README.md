@@ -6,6 +6,7 @@ Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi için geliştirilmiş,
    ...
    
    https://youtu.be/qq9lJYE4PZE
+   
    ...
 
 ## 📋 Özellikler
